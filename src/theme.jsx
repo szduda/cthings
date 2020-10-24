@@ -9,7 +9,7 @@ export const colors = {
   green: '#2E8269',
   orange: '#D95D39',
   yellow: '#F9C926',
-  yellowDark: '#EFB806',
+  yellowDark: '#DBA906',
   black: '#243230',
   white: '#F1FAEA',
   gray: '#334746',
@@ -22,6 +22,5 @@ export const Icons = {
     <HamburgerIcon css={css`fill: ${color}`} {...rest} />,
   Search: ({ color = colors.white, ...rest }) =>
     <SearchIcon css={css`fill: ${color}`} {...rest} />,
-  Add: () =>
-    <AddIcon css={css`fill: ${colors.black}`} />
+  Add: () => <AddIcon css={css`fill: ${colors.black}`} />
 }

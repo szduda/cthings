@@ -18,6 +18,7 @@ const Logo = () => (
   margin: 0;
   font-weight: 300;
   color: ${colors.yellow};
+  transform: translateY(-2px);
   b {
     font-size: 24px;
     line-height: 28px;
@@ -27,6 +28,15 @@ const Logo = () => (
   }`}>
     <b>C<span css={css`color: ${colors.orange}; margin-left: -3px;`}>T</span></b>hings
   </h1>
+)
+
+const Title = () => (
+  <h2 css={css`
+    margin: 0;
+    font-size: 16px;
+    line-height: 28px;
+    color: ${colors.grayLight};
+  `}>24-10-2020</h2>
 )
 
 const Group = props => <div css={css`
@@ -40,6 +50,7 @@ const MenuTrigger = () => <Icons.Hamburger />
 export const Header = () => (
   <Wrapper>
     <Logo />
+    <Title />
     <Group>
       <SearchTrigger />
       <MenuTrigger />

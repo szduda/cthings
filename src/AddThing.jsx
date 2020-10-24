@@ -11,10 +11,10 @@ const FAB = props => (
     right: 12px;
     display: flex;
     box-shadow: 0 0 8px 4px ${colors.gray};
-    transition: transform 100ms ease-out, opacity 100ms ease-out;
+    transition: transform 100ms ease-out, background 100ms ease-out;
 
     :hover {
-      opacity: 0.8;
+      background: ${colors.yellowDark};
     }
 
     > {
