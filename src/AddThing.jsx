@@ -10,6 +10,8 @@ const FAB = props => (
     bottom: 12px;
     right: 12px;
     display: flex;
+    padding: 8px;
+    margin: 0;
     box-shadow: 0 0 8px 4px ${colors.gray};
     transition: transform 100ms ease-out, background 100ms ease-out;
 

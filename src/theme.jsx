@@ -3,6 +3,7 @@ import { jsx, css } from '@emotion/core'
 import { ReactComponent as HamburgerIcon } from './assets/icons/hamburger.svg';
 import { ReactComponent as SearchIcon } from './assets/icons/search.svg';
 import { ReactComponent as AddIcon } from './assets/icons/add.svg';
+import { ReactComponent as CloseIcon } from './assets/icons/close.svg';
 
 export const colors = {
   red: '#ED3C19',
@@ -22,5 +23,6 @@ export const Icons = {
     <HamburgerIcon css={css`fill: ${color}`} {...rest} />,
   Search: ({ color = colors.white, ...rest }) =>
     <SearchIcon css={css`fill: ${color}`} {...rest} />,
-  Add: () => <AddIcon css={css`fill: ${colors.black}`} />
+  Add: () => <AddIcon css={css`fill: ${colors.black}`} />,
+  Close: () => <CloseIcon css={css`fill: ${colors.white}`} />
 }

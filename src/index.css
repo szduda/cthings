@@ -25,8 +25,16 @@ div {
 
 button {
   border: 0;
-  padding: 8px;
   font: 500 12px Consolas;
   background: none;
   outline: none;
+  padding: 4px;
+  margin: -4px;
+  display: flex;
+  justify-content: center;
+  transition: transform 100ms ease-out;
+}
+
+button *:active, button:active {
+  transform: scaleX(0.97);
 }
