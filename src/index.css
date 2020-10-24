@@ -16,9 +16,17 @@ header {
 }
 
 main {
-  margin-top: 52px;
+  margin-top: 48px;
 }
 
 div {
   box-sizing: border-box;
+}
+
+button {
+  border: 0;
+  padding: 8px;
+  font: 500 12px Consolas;
+  background: none;
+  outline: none;
 }
