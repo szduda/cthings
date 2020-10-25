@@ -2,9 +2,10 @@ import React from 'react';
 import { Header } from './Header'
 import { Timeline } from './Timeline'
 import { AddThingTrigger } from './AddThing'
+import StateManager from './StateManager/Store'
 
 export default () => (
-  <div>
+  <StateManager>
     <header>
       <Header />
     </header>
@@ -12,5 +13,5 @@ export default () => (
       <Timeline />
       <AddThingTrigger />
     </main>
-  </div>
+  </StateManager>
 )

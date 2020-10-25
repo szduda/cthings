@@ -3,6 +3,7 @@ import { jsx, css } from '@emotion/core'
 import { colors, Icons } from './theme'
 import { Calendar } from './Calendar'
 import { useState } from 'react'
+import { useStore } from './StateManager/Store'
 
 const Wrapper = props => (
   <div css={css`
@@ -38,13 +39,13 @@ const Logo = () => (
   </h1>
 )
 
-const Title = () => (
+const Title = ({ text }) => (
   <h2 css={css`
     margin: 0;
     font-size: 16px;
     line-height: 28px;
     color: ${colors.grayLight};
-  `}>24-10-2020</h2>
+  `}>{text}</h2>
 )
 
 const Group = props => <div css={css`
@@ -63,7 +64,7 @@ const menuItems = [
   'Timeline', 'Statistics', 'Preferences', 'Help'
 ]
 
-const RichHeader = ({ visible }) => (
+const RichHeader = ({ visible, selectedDate, setDate }) => (
   <div css={css`
     height: calc(100vh - 48px);
     transition: top 300ms ease-out, opacity 300ms ease-out, visibility 300ms linear;
@@ -78,7 +79,9 @@ const RichHeader = ({ visible }) => (
     top: ${visible ? 48 : 0}px;
   `}>
     <Row align="center">
-      <Calendar />
+      <button onClick={() => setDate(selectedDate === "25-10-2020" ? "24-10-2020" : "25-10-2020")}>
+        <Calendar selectedDate={selectedDate} />
+      </button>
     </Row>
     <Row align="center">
       <nav>
@@ -125,11 +128,14 @@ const RichHeader = ({ visible }) => (
 
 export const Header = () => {
   const [menuOpened, setMenuOpened] = useState(false)
+  const { state, actions } = useStore()
+  const { current } = state
+  const { setDate } = actions.current
   return (
     <Wrapper>
       <Row>
         <Logo />
-        {!menuOpened && <Title />}
+        {!menuOpened && <Title text={current.date} />}
         <Group>
           <SearchTrigger />
           <MenuTrigger
@@ -138,7 +144,7 @@ export const Header = () => {
           />
         </Group>
       </Row>
-      <RichHeader visible={menuOpened} />
+      <RichHeader visible={menuOpened} selectedDate={current.date} setDate={setDate} />
     </Wrapper>
   )
 }

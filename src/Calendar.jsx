@@ -2,7 +2,7 @@
 import { jsx, css } from '@emotion/core'
 import { colors } from './theme'
 
-export const Calendar = () => {
+export const Calendar = ({ selectedDate }) => {
   return (
     <div css={css`margin: 32px 0 64px;`}>
       <h2 css={css`
@@ -11,7 +11,8 @@ export const Calendar = () => {
         margin: 0 0 8px 0;
         font-weight: 500;
         text-align: center;
-      `}>24-10-2020</h2>
+        color: ${colors.white};
+      `}>{selectedDate}</h2>
       <div css={css`
       color: ${colors.grayLight};
       background: ${colors.grayDark};

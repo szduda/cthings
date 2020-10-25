@@ -1,6 +1,7 @@
 /** @jsx jsx */
 import { jsx, css } from '@emotion/core'
 import { colors } from './theme'
+import { useStore } from './StateManager/Store'
 
 const Wrapper = props => (
   <div css={css`
@@ -67,7 +68,8 @@ const Column = ({ items, color, ...rest }) => (
   </div>
 )
 
-const Labels = () => <div css={css`
+const Labels = () => (
+  <div css={css`
   flex-basis: 10%;
   color: ${colors.grayLight};
   font-size: 10px;
@@ -78,8 +80,8 @@ const Labels = () => <div css={css`
   height: calc(100vh - 64px);
   transform: translateY(-4px);
 `}>
-  {scale.map(place => (
-    <div key={place.time} css={css`
+    {scale.map(place => (
+      <div key={place.time} css={css`
       position:absolute;
       top: ${place.top}px;
       left: 2px;
@@ -88,38 +90,26 @@ const Labels = () => <div css={css`
       text-align: left;
       padding: 1px 0px;
     `}>{place.time % Math.floor(place.time) === 0 &&
-        <span>
-          {Math.floor(place.time)}
-          <sup css={css`font-size: 6px;`}>00</sup>
-        </span>
-      }</div>
-  ))}
-</div>
-
-const things = {
-  activities: [
-    { start: 8, name: 'Shower' },
-    { start: 8.5, name: 'Breakfast' },
-    { start: 9, end: 17, name: 'Work' }
-  ],
-  feelings: [
-    { start: 12, end: 16, name: 'Motivated' },
-    { start: 11, name: 'Hungryyyyy :(' }
-  ],
-  thoughts: [
-    { start: 8, name: 'Nice wake up!' },
-    { start: 14, name: 'I should buy a boat' },
-    { start: 17.5, name: 'Party or not to party?' }
-  ],
-}
+          <span>
+            {Math.floor(place.time)}
+            <sup css={css`font-size: 6px;`}>00</sup>
+          </span>
+        }</div>
+    ))}
+  </div>
+)
 
 const scale = [...Array(24)].map((item, index) => ({ time: index * 0.5 + 8, top: 30 * index }))
 
-export const Timeline = () => (
-  <Wrapper>
-    <Labels />
-    <Column items={things.activities} />
-    <Column items={things.feelings} color={colors.orange} />
-    <Column items={things.thoughts} color={colors.green} />
-  </Wrapper>
-)
+export const Timeline = () => {
+  const { getters } = useStore()
+  const things = getters.getCurrentThings()
+  return (
+    <Wrapper>
+      <Labels />
+      <Column items={things.activities} />
+      <Column items={things.feelings} color={colors.orange} />
+      <Column items={things.thoughts} color={colors.green} />
+    </Wrapper>
+  )
+}
