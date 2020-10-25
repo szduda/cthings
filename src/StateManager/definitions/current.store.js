@@ -7,7 +7,6 @@ export const currentReducer = (state, action) => {
   const { payload, type } = action
   switch (type) {
     case 'setDate':
-      console.log('setDate')
       return {
         ...state,
         date: payload

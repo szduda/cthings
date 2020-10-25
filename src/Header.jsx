@@ -1,6 +1,6 @@
 /** @jsx jsx */
 import { jsx, css } from '@emotion/core'
-import { colors, Icons } from './theme'
+import { colors, Icons, Button, Link } from './theme'
 import { Calendar } from './Calendar'
 import { useState } from 'react'
 import { useStore } from './StateManager/Store'
@@ -55,16 +55,16 @@ const Group = props => <div css={css`
 
 const SearchTrigger = () => <Icons.Search css={css`margin-right: 16px;`} />
 const MenuTrigger = ({ opened, ...props }) => (
-  <button {...props}>
+  <Button {...props}>
     {opened ? <Icons.Close /> : <Icons.Hamburger />}
-  </button>
+  </Button>
 )
 
 const menuItems = [
   'Timeline', 'Statistics', 'Preferences', 'Help'
 ]
 
-const RichHeader = ({ visible, selectedDate, setDate }) => (
+const MainMenu = ({ visible, selectedDate, setDate }) => (
   <div css={css`
     height: calc(100vh - 48px);
     transition: top 300ms ease-out, opacity 300ms ease-out, visibility 300ms linear;
@@ -79,9 +79,9 @@ const RichHeader = ({ visible, selectedDate, setDate }) => (
     top: ${visible ? 48 : 0}px;
   `}>
     <Row align="center">
-      <button onClick={() => setDate(selectedDate === "25-10-2020" ? "24-10-2020" : "25-10-2020")}>
+      <Button onClick={() => setDate(selectedDate === "25-10-2020" ? "24-10-2020" : "25-10-2020")}>
         <Calendar selectedDate={selectedDate} />
-      </button>
+      </Button>
     </Row>
     <Row align="center">
       <nav>
@@ -99,7 +99,7 @@ const RichHeader = ({ visible, selectedDate, setDate }) => (
               flex-basis: calc(50% - 16px);
               margin: 8px;
             `}>
-              <button css={css`
+              <Button css={css`
                 background: ${[colors.yellow, colors.green, colors.orange, colors.grayDark][index]};
                 color: ${index ? colors.white : colors.black};
                 padding: 4px 6px;
@@ -107,7 +107,7 @@ const RichHeader = ({ visible, selectedDate, setDate }) => (
                 font-size: 16px;
                 line-height: 24px;
                 width: 100%;
-              `}>{menuItems[index]}</button>
+              `}>{menuItems[index]}</Button>
             </li>
           )}
         </ul>
@@ -119,8 +119,13 @@ const RichHeader = ({ visible, selectedDate, setDate }) => (
         position: absolute;
         bottom: 0;
         margin: 64px 0 32px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
       `}>
-        Some footer information
+        <p>Signed in as Szymon.</p>
+        <Link href="#">Logout</Link>
       </footer>
     </Row>
   </div>
@@ -144,7 +149,7 @@ export const Header = () => {
           />
         </Group>
       </Row>
-      <RichHeader visible={menuOpened} selectedDate={current.date} setDate={setDate} />
+      <MainMenu visible={menuOpened} selectedDate={current.date} setDate={setDate} />
     </Wrapper>
   )
 }

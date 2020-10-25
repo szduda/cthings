@@ -1,9 +1,9 @@
 /** @jsx jsx */
 import { jsx, css } from '@emotion/core'
-import { colors, Icons } from './theme'
+import { colors, Icons, Button } from './theme'
 
 const FAB = props => (
-  <button css={css`
+  <Button css={css`
     border-radius: 50%;
     background: ${colors.yellow};
     position: fixed;

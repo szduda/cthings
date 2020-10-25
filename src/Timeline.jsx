@@ -9,13 +9,6 @@ const Wrapper = props => (
   display: flex;
   background: ${colors.gray};
   overflow: scroll;
-  
-  p {
-    font-size: 16px;
-    line-height: 24px;
-    font-weight: 300;
-    margin: 0 0 8px 0;
-  }
   `} {...props} />
 )
 
