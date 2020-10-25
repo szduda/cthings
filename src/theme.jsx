@@ -1,5 +1,6 @@
 /** @jsx jsx */
 import { jsx, css } from '@emotion/core'
+import PageVisibility from 'react-page-visibility';
 import { ReactComponent as HamburgerIcon } from './assets/icons/hamburger.svg';
 import { ReactComponent as SearchIcon } from './assets/icons/search.svg';
 import { ReactComponent as AddIcon } from './assets/icons/add.svg';
@@ -31,8 +32,19 @@ export const Icons = {
   Close: () => <CloseIcon css={css`fill: ${colors.white}`} />
 }
 
+const pageVisibilityChanged = visible => {
+  if (visible) {
+    //  TODO: refresh some data just in case
+  }
+}
+
+export const themeProps = {
+  headerHeight: '56px'
+}
+
 export const Theme = props => (
-  <div css={css`
+  <PageVisibility onChange={pageVisibilityChanged}>
+    <div css={css`
     font-family: 'Consolas';
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
@@ -48,7 +60,7 @@ export const Theme = props => (
     }
     
     main {
-      margin-top: 48px;
+      margin-top: ${themeProps.headerHeight};
     }
     
     div {
@@ -62,6 +74,7 @@ export const Theme = props => (
       margin: 0 0 8px 0;
     }
   `} {...props} />
+  </PageVisibility>
 )
 
 export const Button = props => (
@@ -70,8 +83,6 @@ export const Button = props => (
     font: 500 12px Consolas;
     background: none;
     outline: none;
-    padding: 4px;
-    margin: -4px;
     display: flex;
     justify-content: center;
     transition: transform 100ms ease-out;

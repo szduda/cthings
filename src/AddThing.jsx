@@ -7,10 +7,10 @@ const FAB = props => (
     border-radius: 50%;
     background: ${colors.yellow};
     position: fixed;
-    bottom: 12px;
-    right: 12px;
+    bottom: 24px;
+    right: 24px;
     display: flex;
-    padding: 8px;
+    padding: 12px;
     margin: 0;
     box-shadow: 0 0 8px 4px ${colors.gray};
     transition: transform 100ms ease-out, background 100ms ease-out;

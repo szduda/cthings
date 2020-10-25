@@ -4,12 +4,12 @@ import { colors } from './theme'
 
 export const Calendar = ({ selectedDate }) => {
   return (
-    <div css={css`margin: 32px 0 64px;`}>
+    <div css={css`margin: 32px 0 32px;`}>
       <h2 css={css`
         font-size: 18px;
         line-height: 24px;
         margin: 0 0 8px 0;
-        font-weight: 500;
+        font-weight: 400;
         text-align: center;
         color: ${colors.white};
       `}>{selectedDate}</h2>

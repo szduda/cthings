@@ -1,6 +1,6 @@
 /** @jsx jsx */
 import { jsx, css } from '@emotion/core'
-import { colors, Icons, Button, Link } from './theme'
+import { colors, Icons, Button, Link, themeProps } from './theme'
 import { Calendar } from './Calendar'
 import { useState } from 'react'
 import { useStore } from './StateManager/Store'
@@ -9,7 +9,7 @@ const Wrapper = props => (
   <div css={css`
   background: ${colors.black};
   color: ${colors.white};
-  padding: 10px;
+  padding: 12px 16px;
   box-shadow: 0 0 4px #000;
   `} {...props} />
 )
@@ -26,11 +26,11 @@ const Logo = () => (
   font-size: 16px;
   margin: 0;
   font-weight: 300;
+  line-height: 32px;
   color: ${colors.yellow};
-  transform: translateY(-2px);
+  height: 32px;
   b {
     font-size: 24px;
-    line-height: 28px;
     display: inline-block;
     font-weight: 400;
     margin-right: -3px;
@@ -45,6 +45,7 @@ const Title = ({ text }) => (
     font-size: 16px;
     line-height: 28px;
     color: ${colors.grayLight};
+    align-self: flex-end;
   `}>{text}</h2>
 )
 
@@ -66,7 +67,7 @@ const menuItems = [
 
 const MainMenu = ({ visible, selectedDate, setDate }) => (
   <div css={css`
-    height: calc(100vh - 48px);
+    height: calc(100vh - ${themeProps.headerHeight});
     transition: top 300ms ease-out, opacity 300ms ease-out, visibility 300ms linear;
     overflow: hidden;
     visibility: ${visible ? 'visible' : 'hidden'};
@@ -76,7 +77,7 @@ const MainMenu = ({ visible, selectedDate, setDate }) => (
     width: 100%;
     left: 0;
     z-index: -1;
-    top: ${visible ? 48 : 0}px;
+    top: ${visible ? themeProps.headerHeight : 0};
   `}>
     <Row align="center">
       <Button onClick={() => setDate(selectedDate === "25-10-2020" ? "24-10-2020" : "25-10-2020")}>
@@ -118,7 +119,7 @@ const MainMenu = ({ visible, selectedDate, setDate }) => (
         color: ${colors.grayLight}; 
         position: absolute;
         bottom: 0;
-        margin: 64px 0 32px;
+        margin: 32px 0 32px;
         display: flex;
         flex-direction: column;
         justify-content: center;
