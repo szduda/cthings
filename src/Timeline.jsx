@@ -5,7 +5,7 @@ import { useStore } from './StateManager/Store'
 
 const Wrapper = props => (
   <div css={css`
-  padding: 18px 2px 64px;
+  padding: 74px 2px 64px;
   display: flex;
   background: ${colors.gray};
   overflow: scroll;

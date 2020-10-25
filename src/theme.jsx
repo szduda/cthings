@@ -28,7 +28,8 @@ export const Icons = {
     <HamburgerIcon css={css`fill: ${color}`} {...rest} />,
   Search: ({ color = colors.white, ...rest }) =>
     <SearchIcon css={css`fill: ${color}`} {...rest} />,
-  Add: () => <AddIcon css={css`fill: ${colors.black}`} />,
+  Add: ({ color = colors.white, ...rest }) =>
+    <AddIcon css={css`fill: ${color}`} {...rest} />,
   Close: () => <CloseIcon css={css`fill: ${colors.white}`} />
 }
 
@@ -40,6 +41,53 @@ const pageVisibilityChanged = visible => {
 
 export const themeProps = {
   headerHeight: '56px'
+}
+
+export const BottomContent = ({ visible, onClose, children, ...props }) => (
+  <section css={css`
+    position: fixed;
+    bottom: ${visible ? 0 : '-100px'};
+    opacity: ${visible ? 1 : 0};
+    visibility ${visible ? 'visible' : 'hidden'};
+    transition: bottom 200ms ease-out, opacity 100ms ease-out, visibility 200ms linear;
+    left: 0;
+    right: 0;
+  `} {...props}>
+    <Button onClick={onClose} css={css`
+      border-bottom: 2px solid #000;
+      position: absolute;
+      right: 0;
+      left: 0;
+      transition: backdrop-filter 200ms ease-out 150ms;
+      backdrop-filter: brightness(${visible ? 0.5 : 0}) grayscale(${visible ? 0.4 : 0}) blur(${visible ? 4 : 0}px) opacity(${visible ? 1 : 0});
+      bottom: 100%;
+      height: 100vh;
+      width: 100%;
+    `} />
+    {children}
+  </section>
+)
+
+const Row = ({ align, valign, ...props }) => (
+  <div css={css`
+    display: flex;
+    justify-content: ${align || 'space-between'};
+    align-items: ${valign || 'flex-start'}
+  `} {...props} />
+)
+
+const Col = ({ align, valign, ...props }) => (
+  <div css={css`
+    display: flex;
+    flex-direction: column;
+    justify-content: ${valign || 'flex-start'};
+    align-items: ${align || 'flex-start'}
+  `} {...props} />
+)
+
+export const Flex = {
+  Row,
+  Col
 }
 
 export const Theme = props => (
@@ -59,12 +107,38 @@ export const Theme = props => (
       z-index: 1000;
     }
     
-    main {
-      margin-top: ${themeProps.headerHeight};
-    }
-    
     div {
       box-sizing: border-box;
+    }
+
+    label {
+      display: inline-flex;
+      flex-direction: column;
+      color: ${colors.grayLight};
+      margin: 0 16px 0 0;
+
+      span:first-of-type {
+        min-height: 19px;
+      }
+    }
+
+    textarea, input {
+      background: ${colors.gray};
+      color: ${colors.white};
+      margin: 4px 0 16px;
+      border: none;
+      padding: 4px;
+      min-width: 24px;
+      font-size: 12px;
+      line-height: 16px;
+    }
+
+    input {
+      height: 24px;
+    }
+
+    input[type="checkbox"] {
+      margin: 8px 16px 20px 0;
     }
 
     p {
@@ -72,6 +146,7 @@ export const Theme = props => (
       line-height: 24px;
       font-weight: 300;
       margin: 0 0 8px 0;
+      color: ${colors.white};
     }
   `} {...props} />
   </PageVisibility>

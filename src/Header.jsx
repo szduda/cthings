@@ -1,6 +1,6 @@
 /** @jsx jsx */
 import { jsx, css } from '@emotion/core'
-import { colors, Icons, Button, Link, themeProps } from './theme'
+import { colors, Icons, Button, Link, themeProps, Flex } from './theme'
 import { Calendar } from './Calendar'
 import { useState } from 'react'
 import { useStore } from './StateManager/Store'
@@ -11,13 +11,6 @@ const Wrapper = props => (
   color: ${colors.white};
   padding: 12px 16px;
   box-shadow: 0 0 4px #000;
-  `} {...props} />
-)
-
-const Row = ({ align, ...props }) => (
-  <div css={css`
-    display: flex;
-    justify-content: ${align || 'space-between'};
   `} {...props} />
 )
 
@@ -79,12 +72,12 @@ const MainMenu = ({ visible, selectedDate, setDate }) => (
     z-index: -1;
     top: ${visible ? themeProps.headerHeight : 0};
   `}>
-    <Row align="center">
+    <Flex.Row align="center">
       <Button onClick={() => setDate(selectedDate === "25-10-2020" ? "24-10-2020" : "25-10-2020")}>
         <Calendar selectedDate={selectedDate} />
       </Button>
-    </Row>
-    <Row align="center">
+    </Flex.Row>
+    <Flex.Row align="center">
       <nav>
         <ul css={css`
           flex-wrap: wrap;
@@ -113,8 +106,8 @@ const MainMenu = ({ visible, selectedDate, setDate }) => (
           )}
         </ul>
       </nav>
-    </Row>
-    <Row align="center">
+    </Flex.Row>
+    <Flex.Row align="center">
       <footer css={css`
         color: ${colors.grayLight}; 
         position: absolute;
@@ -128,7 +121,7 @@ const MainMenu = ({ visible, selectedDate, setDate }) => (
         <p>Signed in as Szymon.</p>
         <Link href="#">Logout</Link>
       </footer>
-    </Row>
+    </Flex.Row>
   </div>
 )
 
@@ -139,7 +132,7 @@ export const Header = () => {
   const { setDate } = actions.current
   return (
     <Wrapper>
-      <Row>
+      <Flex.Row valign="center">
         <Logo />
         {!menuOpened && <Title text={current.date} />}
         <Group>
@@ -149,7 +142,7 @@ export const Header = () => {
             onClick={() => setMenuOpened(!menuOpened)}
           />
         </Group>
-      </Row>
+      </Flex.Row>
       <MainMenu visible={menuOpened} selectedDate={current.date} setDate={setDate} />
     </Wrapper>
   )

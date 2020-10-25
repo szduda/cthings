@@ -5,7 +5,8 @@ then run the app with `yarn start`.
 ## TODO
 
 - [ ] Calendar component
-- [ ] Thing form
+- [x] Thing form
+- [ ] Routing
 - [ ] Current things tracking
 - [ ] Store data to firebase
 - [ ] Login form
