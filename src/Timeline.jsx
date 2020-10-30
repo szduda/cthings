@@ -1,7 +1,9 @@
 /** @jsx jsx */
-import { jsx, css } from '@emotion/core'
-import { colors } from './theme'
+import { jsx, css, } from '@emotion/core'
+import { colors, BottomContent } from './theme'
+import { AddThingTrigger, AddThingForm } from './AddThing'
 import { useStore } from './StateManager/Store'
+import { useState, Fragment } from 'react'
 
 const Wrapper = props => (
   <div css={css`
@@ -44,12 +46,13 @@ const Box = ({ color = colors.yellow, thing = {} }) => {
       transform: scaleX(0.97);
     }
   `}>
-    {thing.name}
+    {thing.title}
   </div>)
 }
 
-const Column = ({ items, color, ...rest }) => (
-  <div css={css`
+const Column = ({ items, color, ...rest }) => items && items.length
+  ? (
+    <div css={css`
     display: flex;
     flex-direction: column;
     flex-basis: 30%;
@@ -57,9 +60,9 @@ const Column = ({ items, color, ...rest }) => (
     height: calc(100vh - 64px);
     margin: 0 2px 0 2px;
   `} {...rest}>
-    {items.map((thing, key) => <Box {...{ thing, key, color }} />)}
-  </div>
-)
+      {items.map((thing, key) => <Box {...{ thing, key, color }} />)}
+    </div>)
+  : null
 
 const Labels = () => (
   <div css={css`
@@ -95,14 +98,29 @@ const Labels = () => (
 const scale = [...Array(24)].map((item, index) => ({ time: index * 0.5 + 8, top: 30 * index }))
 
 export const Timeline = () => {
-  const { getters } = useStore()
+  const { state, getters, actions } = useStore()
+  const date = state.current.date
   const things = getters.getCurrentThings()
+  // const things = state.timeline.things
+  const [visible, setVisible] = useState(false)
+
+  const addThing = thing => {
+    actions.timeline.addThing({ thing, date })
+    setVisible(false)
+  }
+
   return (
-    <Wrapper>
-      <Labels />
-      <Column items={things.activities} />
-      <Column items={things.feelings} color={colors.orange} />
-      <Column items={things.thoughts} color={colors.green} />
-    </Wrapper>
+    <Fragment>
+      <Wrapper>
+        <Labels />
+        <Column items={things.activities} />
+        <Column items={things.feelings} color={colors.orange} />
+        <Column items={things.thoughts} color={colors.green} />
+      </Wrapper>
+      <AddThingTrigger onClick={() => setVisible(true)} />
+      <BottomContent visible={visible} onClose={() => setVisible(false)}>
+        <AddThingForm onSubmit={addThing} />
+      </BottomContent>
+    </Fragment>
   )
 }

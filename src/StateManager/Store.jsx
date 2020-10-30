@@ -28,7 +28,6 @@ export const useStore = () => {
   return { state, actions, getters }
 }
 
-
 export const StateProvider = ({ reducer, initialState, children }) => (
   <StateContext.Provider value={useReducer(reducer, initialState)}>
     {children}
@@ -47,6 +46,8 @@ const reducer = ({ timeline, current }, action) => {
   }
 }
 
-export default props => (
+export const StateManager = props => (
   <StateProvider  {...{ initialState, reducer, ...props }} />
 )
+
+export default StateManager

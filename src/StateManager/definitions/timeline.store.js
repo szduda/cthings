@@ -1,31 +1,56 @@
+import { format as formatDate } from 'date-fns'
+// export const defaultState = ({
+//   things: {
+//     "24-10-2020": {
+//       activities: [
+//         { start: 8, name: 'Shower' },
+//         { start: 8.5, name: 'Breakfast' },
+//         { start: 9, end: 17, name: 'Work' }
+//       ],
+//       feelings: [
+//         { start: 12, end: 16, name: 'Motivated' },
+//         { start: 11, name: 'Hungryyyyy :(' }
+//       ],
+//       thoughts: [
+//         { start: 8, name: 'Nice wake up!' },
+//         { start: 14, name: 'I should buy a boat' },
+//         { start: 17.5, name: 'Party or not to party?' }
+//       ],
+//     }
+//   }
+// })
+
 export const defaultState = ({
-  things: {
-    "24-10-2020": {
-      activities: [
-        { start: 8, name: 'Shower' },
-        { start: 8.5, name: 'Breakfast' },
-        { start: 9, end: 17, name: 'Work' }
-      ],
-      feelings: [
-        { start: 12, end: 16, name: 'Motivated' },
-        { start: 11, name: 'Hungryyyyy :(' }
-      ],
-      thoughts: [
-        { start: 8, name: 'Nice wake up!' },
-        { start: 14, name: 'I should buy a boat' },
-        { start: 17.5, name: 'Party or not to party?' }
-      ],
-    }
-  }
+  things: {}
 })
 
+const emptyThings = {
+  activities: [],
+  feelings: [],
+  thoughts: []
+}
+
+const plurals = { activity: 'activities', feeling: 'feelings', thought: 'thoughts' }
+
 export const timelineReducer = (state, action) => {
-  const { payload: things, type } = action
+  const { payload, type } = action
   switch (type) {
     case 'setThings':
+      const { things } = payload
       return {
         ...state,
         things
+      }
+    case 'addThing':
+      const { thing, date } = payload
+      const dayLine = { ...state.things[date] || emptyThings }
+      dayLine[plurals[thing.type]].push(thing)
+      // todo: storage
+      return {
+        ...state,
+        things: {
+          [date]: dayLine
+        }
       }
 
     default:
@@ -38,12 +63,10 @@ export const timelineActions = {
     type: 'setThings',
     payload: things
   }),
-}
-
-const emptyThings = {
-  activities: [],
-  feelings: [],
-  thoughts: []
+  addThing: thing => ({
+    type: 'addThing',
+    payload: thing
+  }),
 }
 
 export const useTimelineGetters = ({ timeline, current }) => ({

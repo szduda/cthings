@@ -1,17 +1,10 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Header } from './Header'
 import { Timeline } from './Timeline'
-import { AddThingTrigger, AddThingForm } from './AddThing'
-import StateManager from './StateManager/Store'
-import { Theme, BottomContent } from './theme';
+import { StateManager } from './StateManager/Store'
+import { Theme } from './theme';
 
 export default () => {
-  const [visible, setVisible] = useState(false)
-
-  const addThing = thing => {
-    // dispatch addThing
-    setVisible(false)
-  }
   return (
     <StateManager>
       <Theme>
@@ -20,10 +13,6 @@ export default () => {
         </header>
         <main>
           <Timeline />
-          <AddThingTrigger onClick={() => setVisible(true)} />
-          <BottomContent visible={visible} onClose={() => setVisible(false)}>
-            <AddThingForm onSubmit={addThing} />
-          </BottomContent>
         </main>
       </Theme>
     </StateManager>

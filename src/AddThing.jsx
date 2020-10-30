@@ -2,6 +2,7 @@
 import { jsx, css } from '@emotion/core'
 import { useState } from 'react';
 import { colors, Icons, Button, Flex } from './theme'
+import { format as formatDate, addMinutes } from 'date-fns'
 
 const FAB = props => (
   <Button css={css`
@@ -42,9 +43,10 @@ export const AddThingTrigger = props => (
 )
 
 const TimePicker = ({ label = '', ...props }) => (
-  <label>
+  <label css={css`position: relative;`}>
     <span>{label}</span>
     <input type="time" {...props} css={css`max-width: 72px;`} />
+    {props.disabled && <div className="InputDisabled" />}
   </label>
 )
 
@@ -61,12 +63,34 @@ const Textbox = ({ label = '', ...props }) => (
   <label>
     <span>{label}</span>
     {/* <input type="text" {...props} /> */}
-    <textarea css={css`height: 96px;`} {...props} />
+    <textarea css={css`height: 24px; width: 240px;`} {...props} />
   </label>
 )
 
+const validate = ({ type, start, end, current, title }, setValid) => {
+  const isValid = !!(type && start && (end || current) && title)
+  setValid(isValid)
+  return isValid
+}
+
+const getTimeNumber = timeStr => {
+  const timeArr = timeStr.split(':')
+  let timeNum = Number(timeArr[0])
+  return timeArr[1] === '00' ? timeNum : timeNum + 0.5
+}
+
+const getTimeString = timeNum => timeNum % Math.floor(timeNum) === 0
+  ? `${Math.floor(timeNum)}:00`
+  : `${Math.floor(timeNum)}:30`
+
 export const AddThingForm = ({ onSubmit }) => {
-  const [thing, setThing] = useState({ type: 'activity', start: Date() })
+  const [thing, setThing] = useState({
+    type: 'activity',
+    start: 10.5,
+    end: 11.5,
+    ongoing: false
+  })
+  const [isValid, setValid] = useState(true)
 
   const RadioInput = ({ color, checked, label, setThingType, ...props }) => (
     <div css={css`
@@ -85,6 +109,8 @@ export const AddThingForm = ({ onSubmit }) => {
       {label}
     </div>
   )
+
+  const submit = () => validate(thing, setValid) && onSubmit(thing)
 
   return (
     <div css={css`
@@ -108,26 +134,54 @@ export const AddThingForm = ({ onSubmit }) => {
           <RadioInput color={colors.orange} label="feeling" checked={thing.type === 'feeling'} />
           <RadioInput color={colors.green} label="thought" checked={thing.type === 'thought'} />
         </Flex.Row>
-        <Flex.Row align="flex-start" css={css`margin-top: 12px;`}>
-          <Flex.Col>
+        <Flex.Col css={css`margin-top: 12px;`}>
+          <Flex.Row>
             <TimePicker
               label="begin"
-              value={thing.start}
-              onChange={event => setThing({ ...thing, start: event.target.value })}
+              value={getTimeString(thing.start)}
+              onChange={event => setThing({
+                ...thing,
+                start: getTimeNumber(event.target.value)
+              })}
             />
-            <TimePicker label="end" />
+            <TimePicker
+              label="end"
+              disabled={thing.ongoing}
+              value={getTimeString(thing.end)}
+              onChange={event => setThing({
+                ...thing,
+                end: getTimeNumber(event.target.value)
+              })} />
             <Checkbox
               label="ongoing"
-              checked={!!thing.end}
-              onChange={event => !event.target.value && setThing({ ...thing, end: null })}
+              checked={thing.ongoing}
+              onChange={() => setThing({
+                ...thing,
+                ongoing: !thing.ongoing
+              })}
             />
-          </Flex.Col>
-          <Flex.Col>
-            <Textbox label="title" value={thing.title} />
-          </Flex.Col>
-        </Flex.Row>
+          </Flex.Row>
+          <Textbox
+            label="title"
+            value={thing.title}
+            onChange={event => setThing({ ...thing, title: event.target.value })} />
+          <Textbox
+            label="tags"
+            value={thing.tags}
+            css={css`height: 48px;`}
+            onChange={event => setThing({ ...thing, description: event.target.value })} />
+        </Flex.Col>
+        <Icons.Exclamation
+          color={colors.red}
+          css={css`
+            visibility: ${isValid ? 'hidden' : 'visible'};
+            position: absolute;
+            bottom: 64px;
+            right: 16px;
+          `} />
         <FAB
-          onClick={onSubmit}
+          onClick={submit}
+          role="submit"
           css={css`
             background: ${colors.green}; 
             :hover { background: ${colors.grayLight} }

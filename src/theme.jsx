@@ -5,6 +5,7 @@ import { ReactComponent as HamburgerIcon } from './assets/icons/hamburger.svg';
 import { ReactComponent as SearchIcon } from './assets/icons/search.svg';
 import { ReactComponent as AddIcon } from './assets/icons/add.svg';
 import { ReactComponent as CloseIcon } from './assets/icons/close.svg';
+import { ReactComponent as ExclamationIcon } from './assets/icons/exclamation.svg';
 
 export const colors = {
   red: '#ED3C19',
@@ -30,7 +31,9 @@ export const Icons = {
     <SearchIcon css={css`fill: ${color}`} {...rest} />,
   Add: ({ color = colors.white, ...rest }) =>
     <AddIcon css={css`fill: ${color}`} {...rest} />,
-  Close: () => <CloseIcon css={css`fill: ${colors.white}`} />
+  Close: () => <CloseIcon css={css`fill: ${colors.white}`} />,
+  Exclamation: ({ color = colors.red, ...rest }) =>
+    <ExclamationIcon css={css`fill: ${color}`} {...rest} />,
 }
 
 const pageVisibilityChanged = visible => {
@@ -135,6 +138,20 @@ export const Theme = props => (
 
     input {
       height: 24px;
+    }
+
+    input:disabled {
+      color: ${colors.grayLight};
+    }
+
+    .InputDisabled {
+      background: ${colors.gray};
+      opacity: 0.8;
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      left: 0;
+      top: 0;
     }
 
     input[type="checkbox"] {
