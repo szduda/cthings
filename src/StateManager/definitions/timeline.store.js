@@ -1,24 +1,4 @@
-import { format as formatDate } from 'date-fns'
-// export const defaultState = ({
-//   things: {
-//     "24-10-2020": {
-//       activities: [
-//         { start: 8, name: 'Shower' },
-//         { start: 8.5, name: 'Breakfast' },
-//         { start: 9, end: 17, name: 'Work' }
-//       ],
-//       feelings: [
-//         { start: 12, end: 16, name: 'Motivated' },
-//         { start: 11, name: 'Hungryyyyy :(' }
-//       ],
-//       thoughts: [
-//         { start: 8, name: 'Nice wake up!' },
-//         { start: 14, name: 'I should buy a boat' },
-//         { start: 17.5, name: 'Party or not to party?' }
-//       ],
-//     }
-//   }
-// })
+import DataService from "../../DataService"
 
 export const defaultState = ({
   things: {}
@@ -35,23 +15,33 @@ const plurals = { activity: 'activities', feeling: 'feelings', thought: 'thought
 export const timelineReducer = (state, action) => {
   const { payload, type } = action
   switch (type) {
-    case 'setThings':
-      const { things } = payload
-      return {
-        ...state,
-        things
-      }
     case 'addThing':
-      const { thing, date } = payload
-      const dayLine = { ...state.things[date] || emptyThings }
-      dayLine[plurals[thing.type]].push(thing)
-      // todo: storage
+      const dayLine = { ...state.things[payload.date] || emptyThings }
+      dayLine[plurals[payload.thing.type]].push({ ...payload.thing, id: 'temp' })
       return {
         ...state,
         things: {
-          [date]: dayLine
+          [payload.date]: dayLine
         }
       }
+    case 'setThings':
+      return {
+        ...state,
+        things: { [payload.date]: payload.things }
+      }
+    case 'updateThing': (() => {
+      const type = plurals[payload.thing.type]
+      console.log('thing', payload.thing)
+      const dayLine = { ...state.things[payload.date] }
+      dayLine[type] = [...dayLine[type].filter(t => t.id !== payload.tempId), payload.thing]
+      console.log('dayLine[type]', dayLine[type])
+      return {
+        ...state,
+        things: {
+          [payload.date]: dayLine
+        }
+      }
+    })()
 
     default:
       return state;
@@ -59,14 +49,18 @@ export const timelineReducer = (state, action) => {
 }
 
 export const timelineActions = {
-  setThings: things => ({
+  setThings: payload => ({
     type: 'setThings',
-    payload: things
+    payload
   }),
-  addThing: thing => ({
+  addThing: payload => ({
     type: 'addThing',
-    payload: thing
+    payload
   }),
+  updateThing: payload => ({
+    type: 'updateThing',
+    payload
+  })
 }
 
 export const useTimelineGetters = ({ timeline, current }) => ({

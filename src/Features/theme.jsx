@@ -1,11 +1,11 @@
 /** @jsx jsx */
 import { jsx, css } from '@emotion/core'
 import PageVisibility from 'react-page-visibility';
-import { ReactComponent as HamburgerIcon } from './assets/icons/hamburger.svg';
-import { ReactComponent as SearchIcon } from './assets/icons/search.svg';
-import { ReactComponent as AddIcon } from './assets/icons/add.svg';
-import { ReactComponent as CloseIcon } from './assets/icons/close.svg';
-import { ReactComponent as ExclamationIcon } from './assets/icons/exclamation.svg';
+import { ReactComponent as HamburgerIcon } from '../assets/icons/hamburger.svg';
+import { ReactComponent as SearchIcon } from '../assets/icons/search.svg';
+import { ReactComponent as AddIcon } from '../assets/icons/add.svg';
+import { ReactComponent as CloseIcon } from '../assets/icons/close.svg';
+import { ReactComponent as ExclamationIcon } from '../assets/icons/exclamation.svg';
 
 export const colors = {
   red: '#ED3C19',

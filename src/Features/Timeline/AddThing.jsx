@@ -1,7 +1,7 @@
 /** @jsx jsx */
 import { jsx, css } from '@emotion/core'
 import { useState } from 'react';
-import { colors, Icons, Button, Flex } from './theme'
+import { colors, Icons, Button, Flex } from '../theme'
 import { format as formatDate, addMinutes } from 'date-fns'
 
 const FAB = props => (

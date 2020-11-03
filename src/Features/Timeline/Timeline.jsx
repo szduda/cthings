@@ -1,9 +1,8 @@
 /** @jsx jsx */
 import { jsx, css, } from '@emotion/core'
-import { colors, BottomContent } from './theme'
+import { Fragment } from 'react'
+import { colors, BottomContent } from '../theme'
 import { AddThingTrigger, AddThingForm } from './AddThing'
-import { useStore } from './StateManager/Store'
-import { useState, Fragment } from 'react'
 
 const Wrapper = props => (
   <div css={css`
@@ -97,18 +96,8 @@ const Labels = () => (
 
 const scale = [...Array(24)].map((item, index) => ({ time: index * 0.5 + 8, top: 30 * index }))
 
-export const Timeline = () => {
-  const { state, getters, actions } = useStore()
-  const date = state.current.date
-  const things = getters.getCurrentThings()
-  // const things = state.timeline.things
-  const [visible, setVisible] = useState(false)
-
-  const addThing = thing => {
-    actions.timeline.addThing({ thing, date })
-    setVisible(false)
-  }
-
+export const Timeline = ({ useTimelineContext }) => {
+  const { things, addThing, setFormVisible, formVisible } = useTimelineContext()
   return (
     <Fragment>
       <Wrapper>
@@ -117,8 +106,8 @@ export const Timeline = () => {
         <Column items={things.feelings} color={colors.orange} />
         <Column items={things.thoughts} color={colors.green} />
       </Wrapper>
-      <AddThingTrigger onClick={() => setVisible(true)} />
-      <BottomContent visible={visible} onClose={() => setVisible(false)}>
+      <AddThingTrigger onClick={() => setFormVisible(true)} />
+      <BottomContent visible={formVisible} onClose={() => setFormVisible(false)}>
         <AddThingForm onSubmit={addThing} />
       </BottomContent>
     </Fragment>

@@ -1,20 +1,11 @@
 import React from 'react';
-import { Header } from './Header'
-import { Timeline } from './Timeline'
 import { StateManager } from './StateManager/Store'
-import { Theme } from './theme';
+import Main from './Pages/Main'
 
 export default () => {
   return (
     <StateManager>
-      <Theme>
-        <header>
-          <Header />
-        </header>
-        <main>
-          <Timeline />
-        </main>
-      </Theme>
+      <Main />
     </StateManager>
   )
 }

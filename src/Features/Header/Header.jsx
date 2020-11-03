@@ -1,9 +1,9 @@
 /** @jsx jsx */
 import { jsx, css } from '@emotion/core'
-import { colors, Icons, Button, Link, themeProps, Flex } from './theme'
-import { Calendar } from './Calendar'
-import { useState } from 'react'
-import { useStore } from './StateManager/Store'
+import { colors, Icons, Button, Link, themeProps, Flex } from '../theme'
+import { Calendar } from '../Calendar'
+import React, { useState } from 'react'
+import { useStore } from '../../StateManager/Store'
 
 const Wrapper = props => (
   <div css={css`
@@ -125,11 +125,9 @@ const MainMenu = ({ visible, selectedDate, setDate }) => (
   </div>
 )
 
-export const Header = () => {
-  const [menuOpened, setMenuOpened] = useState(false)
-  const { state, actions } = useStore()
-  const { current } = state
-  const { setDate } = actions.current
+// export const Header = ({ menuOpened, setMenuOpened, current, setDate }) => {
+export const Header = ({ useHeaderContext }) => {
+  const { menuOpened, setMenuOpened, current, setDate } = useHeaderContext()
   return (
     <Wrapper>
       <Flex.Row valign="center">
