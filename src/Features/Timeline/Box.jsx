@@ -5,7 +5,7 @@ import { colors } from '../theme'
 const layerInfo = color => [
   { left: 0, right: 0, bg: colors.darken(color) },
   { left: 4, right: 4, bg: colors.lighten(color) },
-  { left: 0, right: 8, bg: color },
+  { left: -2, right: 8, bg: color },
 ]
 
 const Wrapper = ({ color, top, end, layer, ...rest }) => {
@@ -28,11 +28,10 @@ const Wrapper = ({ color, top, end, layer, ...rest }) => {
   top: ${top}px;
   height: ${Math.max(22, end - top - 8)}px;
   transition: transform 100ms ease-out, opacity 100ms ease-out;
-  box-shadow: 0 3px 8px 0 #00000022;
+  box-shadow: 0 2px 4px 0 ${colors.grayDark}44;
 
   :hover {
-    font-size: 14px;
-    font-weight: bold;
+    text-decoration: underline;
   }
 
   > {

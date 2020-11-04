@@ -1,11 +1,20 @@
 import React from 'react';
 import { StateManager } from './StateManager/Store'
-import Main from './Pages/Main'
+import Router from './Router'
+import { Theme } from './Features/theme';
+import { useHeader } from './Features/Header/useHeader'
 
-export default () => {
-  return (
-    <StateManager>
-      <Main />
-    </StateManager>
-  )
-}
+const Header = useHeader()
+
+export default () => (
+  <StateManager>
+    <Theme>
+      <header>
+        <Header />
+      </header>
+      <main>
+        <Router />
+      </main>
+    </Theme>
+  </StateManager>
+)

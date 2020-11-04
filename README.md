@@ -7,7 +7,7 @@ then run the app with `yarn start`.
 - [ ] Calendar component
 - [x] Thing form
 - [x] Concurrent timeline events
-- [ ] Routing
+- [x] Routing
 - [ ] Current things tracking
 - [ ] Store data to firebase
 - [ ] Login form
