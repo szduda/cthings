@@ -1,5 +1,3 @@
-import DataService from "../../DataService"
-
 export const defaultState = ({
   things: {}
 })
@@ -29,22 +27,24 @@ export const timelineReducer = (state, action) => {
         ...state,
         things: { [payload.date]: payload.things }
       }
-    case 'updateThing': (() => {
-      const type = plurals[payload.thing.type]
-      console.log('thing', payload.thing)
-      const dayLine = { ...state.things[payload.date] }
-      dayLine[type] = [...dayLine[type].filter(t => t.id !== payload.tempId), payload.thing]
-      console.log('dayLine[type]', dayLine[type])
-      return {
-        ...state,
-        things: {
-          [payload.date]: dayLine
-        }
-      }
-    })()
+    case 'updateThing': return updateThing(state)(payload)
 
     default:
       return state;
+  }
+}
+
+const updateThing = state => ({ thing, date, tempId }) => {
+  const type = plurals[thing.type]
+  console.log('thing', thing)
+  const dayLine = { ...state.things[date] }
+  dayLine[type] = [...dayLine[type].filter(t => t.id !== tempId), thing]
+  console.log('dayLine[type]', dayLine[type])
+  return {
+    ...state,
+    things: {
+      [date]: dayLine
+    }
   }
 }
 

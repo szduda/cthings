@@ -3,6 +3,7 @@ import { jsx, css, } from '@emotion/core'
 import { Fragment } from 'react'
 import { colors, BottomContent } from '../theme'
 import { AddThingTrigger, AddThingForm } from './AddThing'
+import { Box } from './Box'
 
 const Wrapper = props => (
   <div css={css`
@@ -13,40 +14,42 @@ const Wrapper = props => (
   `} {...props} />
 )
 
-const Box = ({ color = colors.yellow, thing = {} }) => {
-  const { top } = scale.find(place => place.time === thing.start)
-  const { top: end } = scale.find(place => place.time === thing.end) || { top: top + 22 }
-  return (<div css={css`
-    background: ${color}; 
-    color: ${color === colors.yellow ? colors.black : colors.white};
-    width: 100%;
-    padding: 4px 6px;
-    margin: 0 0 4px 0;
-    border-radius: 4px;
-    font-size: 12px;
-    line-height: 14px;
-    position: absolute;
-    overflow: hidden;
-    white-space: nowrap;
-    text-overflow: ellipsis;
-    top: ${top}px;
-    height: ${Math.max(22, end - top - 8)}px;
-    transition: transform 100ms ease-out, opacity 100ms ease-out;
+const Rows = ({ items, color }) => {
+  const rows = []
+  let max = 0;
+  let max2 = 0;
+  let r = null
 
-    :hover {
-      opacity: 0.8;
-    }
+  const isNewBox = start => !rows.length || start > rows[rows.length - 1].start
 
-    > {
-      transition: transform 100ms ease-out;
+  const getLayer = start => {
+    if (start < max) {
+      if (start < max2)
+        return 2
+      return 1
+    } else return 0
+  }
+
+  items
+    .sort((t1, t2) => 1000 * (t1.start - t2.start) - (t1.end - t1.start) + (t2.end - t2.start))
+    .map((thing) => {
+      const { start, end, title } = thing
+      if (isNewBox(start)) {
+        const layer = getLayer(start)
+        r = { start, end, title, layer }
+        rows.push(r)
+        max2 = layer === 1 ? end : max2
+        max = Math.max(max, rows[rows.length - 1].end)
+      } else {
+        rows[rows.length - 1] = {
+          ...r,
+          end: Math.max(r.end, end),
+          title: [r.title, title].join(', '),
+        }
+        r = rows[rows.length - 1]
       }
-
-    *:active, :active {
-      transform: scaleX(0.97);
-    }
-  `}>
-    {thing.title}
-  </div>)
+    })
+  return rows.map((thing, key) => <Box {...{ thing, key, color, scale }} />)
 }
 
 const Column = ({ items, color, ...rest }) => items && items.length
@@ -59,7 +62,7 @@ const Column = ({ items, color, ...rest }) => items && items.length
     height: calc(100vh - 64px);
     margin: 0 2px 0 2px;
   `} {...rest}>
-      {items.map((thing, key) => <Box {...{ thing, key, color }} />)}
+      <Rows {...{ items, color }} />
     </div>)
   : null
 

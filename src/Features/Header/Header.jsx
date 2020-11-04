@@ -2,8 +2,6 @@
 import { jsx, css } from '@emotion/core'
 import { colors, Icons, Button, Link, themeProps, Flex } from '../theme'
 import { Calendar } from '../Calendar'
-import React, { useState } from 'react'
-import { useStore } from '../../StateManager/Store'
 
 const Wrapper = props => (
   <div css={css`
@@ -125,12 +123,11 @@ const MainMenu = ({ visible, selectedDate, setDate }) => (
   </div>
 )
 
-// export const Header = ({ menuOpened, setMenuOpened, current, setDate }) => {
 export const Header = ({ useHeaderContext }) => {
   const { menuOpened, setMenuOpened, current, setDate } = useHeaderContext()
   return (
     <Wrapper>
-      <Flex.Row valign="center">
+      <Flex.Row valign="center" css={css`max-width: 800px`}>
         <Logo />
         {!menuOpened && <Title text={current.date} />}
         <Group>

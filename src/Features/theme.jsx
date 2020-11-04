@@ -9,12 +9,18 @@ import { ReactComponent as ExclamationIcon } from '../assets/icons/exclamation.s
 
 export const colors = {
   red: '#ED3C19',
+
   orange: '#D95D39',
+  orangeDark: '#BC4524',
+  orangeLight: '#E58E76',
 
   yellow: '#F9C926',
   yellowDark: '#DBA906',
+  yellowLight: '#FBD760',
 
   green: '#2E8269',
+  greenDark: '#205A4A',
+  greenLight: '#40B592',
 
   white: '#F1FAEA',
   black: '#243230',
@@ -22,6 +28,8 @@ export const colors = {
   grayLight: '#808E88',
   gray: '#334746',
   grayDark: '#2B3B3A',
+  darken: color => colors[`${Object.keys(colors).find(key => colors[key] === color)}Dark`] || color,
+  lighten: color => colors[`${Object.keys(colors).find(key => colors[key] === color)}Light`] || color
 }
 
 export const Icons = {
@@ -100,7 +108,8 @@ export const Theme = props => (
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     background: ${colors.white};
-    color: ${colors.black};  
+    color: ${colors.black};
+    max-width: 800px;
     
     header {
       position: fixed;
@@ -186,6 +195,7 @@ export const Button = props => (
 )
 
 export const Link = props => (
+  // eslint-disable-next-line
   <a css={css`
     display: inline-block;
     color: ${colors.white};

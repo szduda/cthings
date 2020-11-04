@@ -7,6 +7,7 @@ import { useTimeline } from '../Features/Timeline/useTimeline'
 export default () => {
   const Timeline = useTimeline({ DataService })
   const Header = useHeader()
+  console.log('here main')
   return (
     <Theme>
       <header>

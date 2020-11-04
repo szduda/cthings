@@ -2,12 +2,11 @@
 import { jsx, css } from '@emotion/core'
 import { useState } from 'react';
 import { colors, Icons, Button, Flex } from '../theme'
-import { format as formatDate, addMinutes } from 'date-fns'
 
 const FAB = props => (
   <Button css={css`
     border-radius: 50%;
-    background: ${colors.yellow};
+    background: ${colors.green};
     position: fixed;
     bottom: 24px;
     right: 24px;
@@ -23,7 +22,7 @@ const FAB = props => (
     }
 
     :hover {
-      background: ${colors.yellowDark};
+      background: ${colors.greenDark};
     }
 
     > {
@@ -38,7 +37,7 @@ const FAB = props => (
 
 export const AddThingTrigger = props => (
   <FAB {...props}>
-    <Icons.Add />
+    <Icons.Add color={colors.yellow} />
   </FAB>
 )
 
@@ -180,12 +179,11 @@ export const AddThingForm = ({ onSubmit }) => {
             right: 16px;
           `} />
         <FAB
-          onClick={submit}
-          role="submit"
-          css={css`
-            background: ${colors.green}; 
-            :hover { background: ${colors.grayLight} }
-        `}>
+          onClick={event => {
+            event.preventDefault()
+            submit()
+          }}
+          role="submit">
           <Icons.Add color={colors.yellow} />
         </FAB>
       </form>

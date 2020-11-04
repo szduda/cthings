@@ -6,10 +6,13 @@ export const useTimeline = ({ DataService }) => {
   const useTimelineContext = () => {
     const { state, getters, actions } = useStore()
     const date = state.current.date
-    useEffect(async () => {
-      const things = await DataService.fetchThings({ date })
-      actions.timeline.setThings({ date, things })
-    }, [date])
+    const { setThings } = actions.timeline
+    useEffect(() => {
+      (async () => {
+        const things = await DataService.fetchThings({ date })
+        setThings({ date, things })
+      })()
+    }, [setThings, date])
     const things = getters.getCurrentThings()
     const [formVisible, setFormVisible] = useState(false)
 
@@ -17,7 +20,7 @@ export const useTimeline = ({ DataService }) => {
       actions.timeline.addThing({ thing, date })
       const tempId = 'temp'
       setFormVisible(false)
-      const id = await DataService.addThing({ date, thing })
+      const id = DataService.addThing({ date, thing })
       actions.timeline.updateThing({ id: tempId, date, thing: { ...thing, id } })
     }
 
