@@ -11,8 +11,8 @@ export const colors = {
   red: '#ED3C19',
 
   orange: '#D95D39',
-  orangeDark: '#BC4524',
-  orangeLight: '#E58E76',
+  orangeDark: '#AB3F21',
+  orangeLight: '#DE7254',
 
   yellow: '#F9C926',
   yellowDark: '#DBA906',
@@ -20,7 +20,7 @@ export const colors = {
 
   green: '#2E8269',
   greenDark: '#205A4A',
-  greenLight: '#40B592',
+  greenLight: '#35977A',
 
   white: '#F1FAEA',
   black: '#243230',

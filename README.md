@@ -8,7 +8,7 @@ then run the app with `yarn start`.
 - [x] Thing form
 - [x] Concurrent timeline events
 - [x] Routing
-- [ ] Current things tracking
+- [ ] Ongoing things tracking
 - [ ] Store data to firebase
 - [ ] Login form
 - [ ] Auth with firebase
