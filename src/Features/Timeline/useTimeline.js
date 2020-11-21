@@ -1,27 +1,37 @@
 import React, { useState, useEffect } from 'react'
 import { useStore } from '../../StateManager/Store'
 import { Timeline } from './Timeline'
+import { getNextId } from '../../appHelper'
 
 export const useTimeline = ({ DataService }) => {
   const useTimelineContext = () => {
     const { state, getters, actions } = useStore()
     const date = state.current.date
     const { setThings } = actions.timeline
+
     useEffect(() => {
-      (async () => {
+      const asyncEffect = async () => {
         const things = await DataService.fetchThings({ date })
         setThings({ date, things })
-      })()
-    }, [setThings, date])
-    const things = getters.getCurrentThings()
+      }
+      asyncEffect()
+    }, [date])
+
     const [formVisible, setFormVisible] = useState(false)
 
+    const things = getters.getCurrentThings()
+
     const addThing = async thing => {
-      actions.timeline.addThing({ thing, date })
-      const tempId = 'temp'
+      const tempThing = { ...thing, id: getNextId() }
+      actions.timeline.addThing({ thing: tempThing, date })
       setFormVisible(false)
-      const id = DataService.addThing({ date, thing })
-      actions.timeline.updateThing({ id: tempId, date, thing: { ...thing, id } })
+      const id = await DataService.addThing({ date, thing })
+      actions.timeline.updateThing({
+        id: tempThing.id,
+        thingType: thing.type,
+        date,
+        thing: { id }
+      })
     }
 
     return { things, addThing, setFormVisible, formVisible }

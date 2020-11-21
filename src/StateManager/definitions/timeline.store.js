@@ -1,3 +1,5 @@
+import { plurals } from '../../appHelper'
+
 export const defaultState = ({
   things: {}
 })
@@ -8,14 +10,12 @@ const emptyThings = {
   thoughts: []
 }
 
-const plurals = { activity: 'activities', feeling: 'feelings', thought: 'thoughts' }
-
 export const timelineReducer = (state, action) => {
   const { payload, type } = action
   switch (type) {
     case 'addThing':
       const dayLine = { ...state.things[payload.date] || emptyThings }
-      dayLine[plurals[payload.thing.type]].push({ ...payload.thing, id: 'temp' })
+      dayLine[plurals[payload.thing.type]].push(payload.thing)
       return {
         ...state,
         things: {
@@ -34,12 +34,13 @@ export const timelineReducer = (state, action) => {
   }
 }
 
-const updateThing = state => ({ thing, date, tempId }) => {
-  const type = plurals[thing.type]
-  console.log('thing', thing)
-  const dayLine = { ...state.things[date] }
-  dayLine[type] = [...dayLine[type].filter(t => t.id !== tempId), thing]
-  console.log('dayLine[type]', dayLine[type])
+const updateThing = state => ({ thing, date, id, thingType }) => {
+  const type = plurals[thingType]
+  const dayLine = { ...emptyThings, ...state.things[date] }
+  const index = dayLine[type].findIndex(t => t.id === id)
+  if (index < 0) return state
+
+  dayLine[type][index] = { ...dayLine[type][index], ...thing }
   return {
     ...state,
     things: {

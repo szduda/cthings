@@ -4,6 +4,8 @@ import { Fragment } from 'react'
 import { colors, BottomContent } from '../theme'
 import { AddThingTrigger, AddThingForm } from './AddThing'
 import { Box } from './Box'
+import { Labels } from './Labels'
+import { sortThings } from '../../appHelper'
 
 const Wrapper = props => (
   <div css={css`
@@ -30,31 +32,34 @@ const Rows = ({ items, color }) => {
     } else return 0
   }
 
+  const updateMax = ({ end, layer }) => {
+    max2 = layer === 1 ? end : max2
+    max = Math.max(max, rows[rows.length - 1].end)
+  }
+
   items
-    .sort((t1, t2) => 1000 * (t1.start - t2.start) - (t1.end - t1.start) + (t2.end - t2.start))
+    .sort(sortThings)
     .map((thing) => {
-      const { start, end, title } = thing
+      const { start, end, title, id } = thing
       if (isNewBox(start)) {
         const layer = getLayer(start)
-        r = { start, end, title, layer }
+        r = { start, end, title, layer, id }
         rows.push(r)
-        max2 = layer === 1 ? end : max2
-        max = Math.max(max, rows[rows.length - 1].end)
+        updateMax({ end, layer })
       } else {
-        rows[rows.length - 1] = {
+        r = rows[rows.length - 1] = {
           ...r,
           end: Math.max(r.end, end),
           title: [r.title, title].join(', '),
         }
-        r = rows[rows.length - 1]
       }
     })
-  return rows.map((thing, key) => <Box {...{ thing, key, color, scale }} />)
+
+  return rows.map(thing => <Box {...{ thing, key: thing.id, color }} />)
 }
 
-const Column = ({ items, color, ...rest }) => items && items.length
-  ? (
-    <div css={css`
+const Column = ({ items, color, ...rest }) =>
+  <div css={css`
     display: flex;
     flex-direction: column;
     flex-basis: 30%;
@@ -62,42 +67,8 @@ const Column = ({ items, color, ...rest }) => items && items.length
     height: calc(100vh - 64px);
     margin: 0 2px 0 2px;
   `} {...rest}>
-      <Rows {...{ items, color }} />
-    </div>)
-  : null
-
-const Labels = () => (
-  <div css={css`
-  flex-basis: 10%;
-  color: ${colors.grayLight};
-  font-size: 10px;
-  line-height: 12px;
-  text-align: right;
-  padding-right: 4px;
-  position: relative;
-  height: calc(100vh - 64px);
-  transform: translateY(-4px);
-`}>
-    {scale.map(place => (
-      <div key={place.time} css={css`
-      position:absolute;
-      top: ${place.top}px;
-      left: 2px;
-      width: calc(100vw - 8px);
-      border-top: 1px solid ${colors.grayDark}88;
-      text-align: left;
-      padding: 1px 0px;
-    `}>{place.time % Math.floor(place.time) === 0 &&
-          <span>
-            {Math.floor(place.time)}
-            <sup css={css`font-size: 6px;`}>00</sup>
-          </span>
-        }</div>
-    ))}
+    {items && items.length && <Rows {...{ items, color }} />}
   </div>
-)
-
-const scale = [...Array(24)].map((item, index) => ({ time: index * 0.5 + 8, top: 30 * index }))
 
 export const Timeline = ({ useTimelineContext }) => {
   const { things, addThing, setFormVisible, formVisible } = useTimelineContext()
